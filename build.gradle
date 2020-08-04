@@ -1,0 +1,81 @@
+buildscript {
+	ext {
+		springBootVersion = '2.3.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version "${springBootVersion}"
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+	maven { url "https://s3-sa-east-1.amazonaws.com/dynamodb-local-sao-paulo/release" }
+}
+
+configurations {
+	dynamodb
+}
+
+dependencies {
+
+	// Spring modules
+	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+	implementation ("io.github.boostchicken:spring-data-dynamodb:5.2.5") {
+		exclude group: 'org.springframework.data', module: 'spring-data-commons'
+	}
+	implementation "org.springframework.data:spring-data-commons:2.2.9.RELEASE"
+
+	// DynamoDB
+	implementation "com.amazonaws:DynamoDBLocal:1.13.2"
+
+	implementation "io.springfox:springfox-swagger2:2.9.2"
+	implementation "io.springfox:springfox-swagger-ui:2.9.2"
+
+	runtimeOnly group: 'com.h2database', name: 'h2', version: '1.4.197'
+	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+
+	// sqllite dynamodb workaround
+	dynamodb fileTree (dir: 'lib', include: ["*.dylib", "*.so", "*.dll"])
+	dynamodb "com.amazonaws:DynamoDBLocal:1.13.2"
+}
+
+//////////////////////////////
+// sqllite dynamodb workaround
+//////////////////////////////
+
+task copyNativeDeps(type: Copy) {
+	from configurations.dynamodb
+	into "$project.buildDir/libs/"
+}
+
+bootRun.dependsOn copyNativeDeps
+bootRun.doFirst {
+	systemProperty "java.library.path", 'build/libs'
+}
+
+test.dependsOn copyNativeDeps
+test.doFirst {
+	systemProperty "java.library.path", 'build/libs'
+}
+
+bootRun {
+	environment "AWS_ACCESS_KEY_ID", "DUMMYIDEXAMPLE"
+	environment "AWS_SECRET_ACCESS_KEY", "DUMMYIDEXAMPLE"
+}
+
+test {
+	environment "AWS_ACCESS_KEY_ID", "DUMMYIDEXAMPLE"
+	environment "AWS_SECRET_ACCESS_KEY", "DUMMYIDEXAMPLE"
+}

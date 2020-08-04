@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+## Spring data dybamoDB configs
+amazon:
+  dynamodb:
+    accesskey: ${AWS_ACCESS_KEY_ID} # gradle seta essa informacao de variavel de ambiente
+    secretkey: ${AWS_SECRET_ACCESS_KEY} # gradle seta essa informacao de variavel de ambiente
+    endpoint: http://localhost:8000
+    region: "us-west-2"
+
+spring:
+  data:
+    dynamodb:
+      entity2ddl:
+        auto: none # don't create tables by entity map (like hibernate does)
+        gsiProjectionType: ALL # only if "auto" isn't "none"
+        readCapacity: 10 # only if "auto" isn't "none"
+        writeCapacity: 1 # only if "auto" isn't "none"
