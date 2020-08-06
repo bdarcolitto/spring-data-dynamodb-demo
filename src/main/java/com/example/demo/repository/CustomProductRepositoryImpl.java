@@ -57,6 +57,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository{
                     .withProvisionedThroughput(new ProvisionedThroughput()
                             .withReadCapacityUnits((long) 10)
                             .withWriteCapacityUnits((long) 1))
+                    // projection ALL copy all attributes to new gsi "table"
                     .withProjection(new Projection().withProjectionType(ProjectionType.ALL));
 
             // GSI indexes definitions

@@ -1,16 +1,25 @@
 package com.example.demo;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import com.example.demo.extension.DynamoDBServerExtension;
+import com.example.demo.service.ProductService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith({SpringExtension.class, DynamoDBServerExtension.class})
 @SpringBootTest
-public class DemoApplicationTests {
+@ActiveProfiles(profiles = "test")
+class DemoApplicationTests {
+
+	@Autowired
+	private ProductService productService;
 
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
+		productService.createTable();
 	}
 }
 

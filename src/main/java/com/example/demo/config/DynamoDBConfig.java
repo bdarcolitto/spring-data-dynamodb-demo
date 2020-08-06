@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -23,11 +23,6 @@ public class DynamoDBConfig {
     private String region;
 
     @Bean
-    public AWSCredentials amazonAWSCredentials() {
-        return new BasicAWSCredentials(accesskey, secretkey);
-    }
-
-    @Bean
     @Primary
     public DynamoDBMapperConfig dynamoDBMapperConfig() {
         return DynamoDBMapperConfig.DEFAULT;
@@ -46,6 +41,7 @@ public class DynamoDBConfig {
                 .withEndpointConfiguration(
                         new AwsClientBuilder
                                 .EndpointConfiguration(endpoint, region))
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accesskey, secretkey)))
                 .build();
     }
 

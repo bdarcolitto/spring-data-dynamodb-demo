@@ -4,8 +4,10 @@ server:
 ## Spring data dybamoDB configs
 amazon:
   dynamodb:
-    accesskey: ${AWS_ACCESS_KEY_ID} # gradle seta essa informacao de variavel de ambiente
-    secretkey: ${AWS_SECRET_ACCESS_KEY} # gradle seta essa informacao de variavel de ambiente
+#    accesskey: ${AWS_ACCESS_KEY_ID} # gradle seta essa informacao de variavel de ambiente
+#    secretkey: ${AWS_SECRET_ACCESS_KEY} # gradle seta essa informacao de variavel de ambiente
+    accesskey: DUMMYIDEXAMPLE # gradle seta essa informacao de variavel de ambiente
+    secretkey: DUMMYIDEXAMPLE # gradle seta essa informacao de variavel de ambiente
     endpoint: http://localhost:8000
     region: "us-west-2"
 

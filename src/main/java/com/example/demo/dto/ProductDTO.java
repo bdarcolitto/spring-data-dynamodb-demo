@@ -1,6 +1,6 @@
-package com.example.demo.vo;
+package com.example.demo.dto;
 
-public class ProductVO {
+public class ProductDTO {
 
     private String id;
     private String name;

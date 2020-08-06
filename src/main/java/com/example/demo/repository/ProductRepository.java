@@ -18,5 +18,12 @@ public interface ProductRepository extends DynamoDBPagingAndSortingRepository<Pr
     @EnableScan
     List<ProductEntity> findAll();
 
+    List<ProductEntity> findByIdAndCreateDate(String id, Integer createDate);
+
+
+
+
+
+    // this method dont work without @EnableScan because is a range_key
     List<ProductEntity> findByCreateDate(Integer createDate);
 }

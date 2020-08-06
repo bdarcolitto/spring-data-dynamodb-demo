@@ -46,6 +46,7 @@ dependencies {
 	runtimeOnly group: 'com.h2database', name: 'h2', version: '1.4.197'
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
 
+
 	// sqllite dynamodb workaround
 	dynamodb fileTree (dir: 'lib', include: ["*.dylib", "*.so", "*.dll"])
 	dynamodb "com.amazonaws:DynamoDBLocal:1.13.2"
@@ -59,23 +60,15 @@ task copyNativeDeps(type: Copy) {
 	from configurations.dynamodb
 	into "$project.buildDir/libs/"
 }
+processResources.dependsOn copyNativeDeps
 
-bootRun.dependsOn copyNativeDeps
 bootRun.doFirst {
 	systemProperty "java.library.path", 'build/libs'
 }
 
-test.dependsOn copyNativeDeps
-test.doFirst {
-	systemProperty "java.library.path", 'build/libs'
-}
-
-bootRun {
-	environment "AWS_ACCESS_KEY_ID", "DUMMYIDEXAMPLE"
-	environment "AWS_SECRET_ACCESS_KEY", "DUMMYIDEXAMPLE"
-}
-
 test {
-	environment "AWS_ACCESS_KEY_ID", "DUMMYIDEXAMPLE"
-	environment "AWS_SECRET_ACCESS_KEY", "DUMMYIDEXAMPLE"
+	minHeapSize = "128m"
+	maxHeapSize = "512m"
+
+	useJUnitPlatform()
 }

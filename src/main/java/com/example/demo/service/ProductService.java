@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 
 import com.example.demo.model.ProductEntity;
 import com.example.demo.repository.ProductRepository;
-import com.example.demo.vo.ProductVO;
+import com.example.demo.dto.ProductDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +28,15 @@ public class ProductService {
     }
 
     @Transactional
-    public void save(final ProductVO productVO) {
+    public void save(final ProductDTO productDTO) {
         ProductEntity productEntity = new ProductEntity();
-        productEntity.setId(productVO.getId());
-        productEntity.setName(productVO.getName());
-        productEntity.setValue(productVO.getValue());
-        productEntity.setCreateDate(productVO.getCreateDate());
+        productEntity.setId(productDTO.getId());
+        productEntity.setName(productDTO.getName());
+        productEntity.setValue(productDTO.getValue());
+        productEntity.setCreateDate(productDTO.getCreateDate());
         productRepository.save(productEntity);
 
-        productRepository.findById(productVO.getId());
-//        productRepository.findByCreateDate(productVO.getCreateDate());
-
-        if( productVO.getId().equals("123") ) {
+        if( productDTO.getId().equals("123") ) {
             throw new RuntimeException("error");
         }
     }
@@ -48,5 +45,13 @@ public class ProductService {
         return productRepository.findAll().stream()
                 .map(ProductEntity::toString)
                 .collect(Collectors.joining());
+    }
+
+    public void listTest() {
+
+        productRepository.findByIdAndName("1", "name");
+//        productRepository.findByCreateDate(20200804);
+        productRepository.findById("1");
+        productRepository.findByIdAndCreateDate("1", 20200804);
     }
 }
