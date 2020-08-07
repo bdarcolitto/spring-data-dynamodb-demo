@@ -2,7 +2,7 @@ package com.example.demo.listener;
 
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
-import com.example.demo.service.ProductService;
+import com.example.demo.config.CreateTablesDynamoDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class DynamoDBCreate {
 
-    private ProductService productService;
+    private CreateTablesDynamoDB createTablesDynamoDB;
 
     @Autowired
-    public DynamoDBCreate (final ProductService productService) {
-        this.productService = productService;
+    public DynamoDBCreate (final CreateTablesDynamoDB createTablesDynamoDB) {
+        this.createTablesDynamoDB = createTablesDynamoDB;
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -31,7 +31,7 @@ public class DynamoDBCreate {
             server.start();
 
         } finally {
-            productService.createTable();
+            createTablesDynamoDB.createTable();
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.example.demo.model.ProductEntity;
@@ -39,6 +40,10 @@ public class ProductService {
         if( productDTO.getId().equals("123") ) {
             throw new RuntimeException("error");
         }
+    }
+
+    public Optional<ProductEntity> findById(final String id) {
+        return productRepository.findById(id);
     }
 
     public String listAll() {

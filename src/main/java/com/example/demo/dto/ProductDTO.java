@@ -7,6 +7,16 @@ public class ProductDTO {
     private Float value;
     private Integer createDate;
 
+    public ProductDTO () {
+    }
+
+    public ProductDTO (final String id, final String name, final Float value, final Integer createDate) {
+        this.id = id;
+        this.name = name;
+        this.value = value;
+        this.createDate = createDate;
+    }
+
     public String getId () {
         return id;
     }
